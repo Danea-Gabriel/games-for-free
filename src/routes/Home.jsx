@@ -1,9 +1,13 @@
-import React from 'react'
+import HeadingHome from "../components/HeadingHome";
+import PersonalRecomandations from "../components/PersonalRecomandations";
 
 const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <div>
+      <HeadingHome />
+      <PersonalRecomandations />
+    </div>
+  );
+};
 
-export default Home
+export default Home;
