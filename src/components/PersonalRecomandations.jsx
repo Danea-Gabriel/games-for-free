@@ -1,47 +1,39 @@
-import React from "react";
-
+import PersonalCard from "./PersonalCard";
+import { useGames } from "../hooks/useGames";
+import RecentlyAddedCard from "./RecentlyAddedCard";
 const PersonalRecomandations = () => {
+  const { data: games, isLoading, isError } = useGames();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error fetching Recomandations</div>;
   return (
     <div className=" dark:bg-gray-900 w-full overflow-auto">
       <div className=" mt-4 text-white dark:bg-gray-800 border-secondary rounded-2xl shadow-xl bg-primary px-2 max-w-[1140px] w-full mx-auto">
         <h2 className="text-4xl font-bold dark:text-gray-400">
           Personalized Recomandations
         </h2>
-        {/* Card */}
         <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div className="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-            <div
-              className="relative overflow-hidden bg-cover bg-no-repeat"
-              data-te-ripple-init
-              data-te-ripple-color="light"
-            >
-              <img
-                className="rounded-t-lg"
-                src="https://tecdn.b-cdn.net/img/new/standard/nature/186.jpg"
-                alt=""
-              />
-              <a href="#!">
-                <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsla(0,0%,98%,0.15)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
-              </a>
-            </div>
-            <div className="p-6">
-              <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-                Card title
-              </h5>
-              <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </p>
-              <button
-                type="button"
-                className="inline-block rounded bg-blue-400 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                data-te-ripple-init
-                data-te-ripple-color="light"
-              >
-                Button
-              </button>
-            </div>
+          {games.slice(0, 3).map(game => (
+            <PersonalCard key={game.id} game={game} />
+          ))}
+        </div>
+      </div>
+      <div className=" mt-4 text-white dark:bg-gray-800 border-secondary rounded-2xl shadow-xl bg-primary px-2 max-w-[1140px] w-full mx-auto flex">
+        <div className="text-white dark:bg-gray-800 border-secondary rounded-2xl  bg-primary px-2 max-w-[1140px] w-full mx-auto ">
+          <h2 className="text-4xl my-4 font-bold dark:text-gray-400">
+            Recently Added
+          </h2>
+          <div className="grid md:grid-cols-2 gap-3">
+            {games.slice(0, 14).map(game => (
+              <RecentlyAddedCard key={game.id} game={game} />
+            ))}
           </div>
+          <button
+            type="button"
+            className="my-4  text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+          >
+            More Games
+          </button>
         </div>
       </div>
     </div>
