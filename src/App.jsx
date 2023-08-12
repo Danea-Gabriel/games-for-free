@@ -5,6 +5,8 @@ import MyAccount from "./routes/MyAccount";
 import MyFavourites from "./routes/MyFavourites";
 import SignIn from "./routes/SignIn";
 import SignUp from "./routes/SignUp";
+import AllGames from "./routes/AllGames";
+import GamePage from "./routes/GamePage";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
@@ -16,6 +18,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/allgames" element={<AllGames />} />
+          <Route path="/game/:id" element={<GamePage />} />
           <Route path="/account" element={<MyAccount />} />
           <Route path="/favourites" element={<MyFavourites />} />
           <Route path="/signin" element={<SignIn />} />
