@@ -1,4 +1,20 @@
+import { useAuthSignInWithEmailAndPassword } from "@react-query-firebase/auth";
+import { auth } from "../firebase";
+import { useState } from "react";
 const SignIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const signin = useAuthSignInWithEmailAndPassword(auth, {
+    onError(error) {
+      console.log(error);
+    },
+  });
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    signin.mutate({ email, password });
+  };
+
   return (
     <div className="dark:bg-gray-900 h-screen ">
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -14,7 +30,7 @@ const SignIn = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="email"
@@ -24,6 +40,8 @@ const SignIn = () => {
               </label>
               <div className="mt-2">
                 <input
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
                   id="email"
                   name="email"
                   type="email"
@@ -53,12 +71,14 @@ const SignIn = () => {
               </div>
               <div className="mt-2">
                 <input
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                   id="password"
                   name="password"
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="md:text-lg text-white block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="md:text-lg text-gray-900 block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -70,6 +90,7 @@ const SignIn = () => {
               >
                 Sign in
               </button>
+              {signin.isError && <p>{signin.error.message}</p>}
             </div>
           </form>
 

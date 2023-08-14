@@ -1,13 +1,28 @@
 import { useState } from "react";
+import { auth } from "../firebase";
+import { useAuthCreateUserWithEmailAndPassword } from "@react-query-firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { firestore } from "../firebase";
+
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const signup = useAuthCreateUserWithEmailAndPassword(auth, {
+    onError(error) {
+      console.log(error);
+    },
+  });
 
   const handleSubmit = async e => {
     e.preventDefault();
+
     try {
+      signup.mutate({ email, password });
+      setDoc(doc(firestore, "users", email), {
+        favourites: [],
+      });
     } catch (error) {
-      console.log(error);
+      console.error("Error during sign up or document set:", error);
     }
   };
 
@@ -36,6 +51,7 @@ const SignUp = () => {
               </label>
               <div className="mt-2">
                 <input
+                  value={email}
                   onChange={e => setEmail(e.target.value)}
                   id="email"
                   name="email"
@@ -66,6 +82,7 @@ const SignUp = () => {
               </div>
               <div className="mt-2">
                 <input
+                  value={password}
                   onChange={e => setPassword(e.target.value)}
                   id="password"
                   name="password"
@@ -79,11 +96,15 @@ const SignUp = () => {
 
             <div>
               <button
+                disabled={signup.isLoading}
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign Up
               </button>
+              {signup.isError && (
+                <p className="text-red-400">{signup.error.message}</p>
+              )}
             </div>
           </form>
 

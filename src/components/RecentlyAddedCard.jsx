@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
+import { Link } from "react-router-dom";
 const RecentlyAddedCard = ({ game }) => {
   return (
-    <a
+    <Link
+      to={`/game/${game.id}`}
       href={game.game_url}
       className="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
     >
@@ -21,7 +23,7 @@ const RecentlyAddedCard = ({ game }) => {
           {game.genre}
         </span>
       </div>
-    </a>
+    </Link>
   );
 };
 

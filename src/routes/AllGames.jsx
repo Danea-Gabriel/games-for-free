@@ -1,9 +1,13 @@
 import { useState } from "react";
 import AllGamesCard from "../components/AllGamesCard";
 import { useGames } from "../hooks/useGames";
+import { useAuthUser } from "@react-query-firebase/auth";
+import { auth } from "../firebase";
+
 const AllGames = () => {
   const { data: games, isLoading, isError } = useGames();
   const [searchTerm, setSearchTerm] = useState("");
+  const user = useAuthUser(["user"], auth);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching Games</div>;
@@ -30,7 +34,7 @@ const AllGames = () => {
           </div>
           <input
             onChange={e => setSearchTerm(e.target.value)}
-            defaultValue={searchTerm}
+            value={searchTerm}
             type="search"
             id="default-search"
             className="block w-full p-4 pl-10 text-lg dark:text-gray-300 border  rounded-2xl   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-gray-500  !important dark:focus:border-gray-500 "
@@ -40,19 +44,20 @@ const AllGames = () => {
       </form>
       <div className=" mt-4 text-white dark:bg-gray-800 border-secondary rounded-2xl shadow-xl bg-primary px-2 max-w-[1140px] w-full mx-auto">
         <div className=" grid md:grid-cols-3 gap-4 ">
-          {games
-            .filter(value => {
-              if (searchTerm === "") {
-                return value;
-              } else if (
-                value.title.toLowerCase().includes(searchTerm.toLowerCase())
-              ) {
-                return value;
-              }
-            })
-            .map(game => (
-              <AllGamesCard key={game.id} game={game} />
-            ))}
+          {user?.data?.email &&
+            games
+              .filter(game => {
+                if (searchTerm === "") {
+                  return game;
+                } else if (
+                  game.title.toLowerCase().includes(searchTerm.toLowerCase())
+                ) {
+                  return game;
+                }
+              })
+              .map(game => (
+                <AllGamesCard key={game.id} game={game} user={user} />
+              ))}
         </div>
       </div>
     </div>

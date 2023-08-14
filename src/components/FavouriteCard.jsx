@@ -1,29 +1,7 @@
 /* eslint-disable react/prop-types */
-// eslint-disable-next-line react/prop-types
-import { FiHeart } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { firestore } from "../firebase";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
-import { useState } from "react";
 
-const AllGamesCard = ({ game, user }) => {
-  const [savedGame, setSavedGame] = useState(false);
-
-  // Gave up on trying to get this to work with react-query-firebase
-  const ref = doc(firestore, "users", user?.data?.email);
-
-  const handleFavourite = async () => {
-    setSavedGame(true);
-    await updateDoc(ref, {
-      favourites: arrayUnion({
-        id: game.id,
-        title: game.title,
-        thumbnail: game.thumbnail,
-        short_description: game.short_description,
-        game_url: game.game_url,
-      }),
-    });
-  };
+const FavouriteCard = ({ game }) => {
   return (
     <div className="max-w-md mx-auto bg-[#32383e] rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 ">
       <div className="relative h-48">
@@ -32,12 +10,6 @@ const AllGamesCard = ({ game, user }) => {
           src={game.thumbnail}
           alt="Image"
         />
-
-        <div className="absolute bottom-2 left-2">
-          <button className="p-1 " onClick={handleFavourite}>
-            <FiHeart size={25} style={{ fill: savedGame ? "red" : null }} />
-          </button>
-        </div>
       </div>
       <div className="p-4">
         <div className="flex items-center justify-between">
@@ -68,4 +40,4 @@ const AllGamesCard = ({ game, user }) => {
   );
 };
 
-export default AllGamesCard;
+export default FavouriteCard;
