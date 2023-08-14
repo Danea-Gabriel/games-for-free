@@ -7,7 +7,7 @@ const fetchGameById = async id => {
     url: "https://free-to-play-games-database.p.rapidapi.com/api/game",
     params: { id },
     headers: {
-      "X-RapidAPI-Key": "3d1af37892mshf71149fdfd099b6p17c69ajsn20ae0a63dcec",
+      "X-RapidAPI-Key": import.meta.env.VITE_REACT_APP_RAPIDAPI_KEY,
       "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
     },
   };
