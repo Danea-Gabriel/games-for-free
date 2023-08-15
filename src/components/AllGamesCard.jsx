@@ -4,16 +4,18 @@ import { FiHeart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { firestore } from "../firebase";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
-import { useState } from "react";
 
-const AllGamesCard = ({ game, user }) => {
-  const [savedGame, setSavedGame] = useState(false);
-
+const AllGamesCard = ({ game, user, favouriteGames }) => {
   // Gave up on trying to get this to work with react-query-firebase
   const ref = doc(firestore, "users", user?.data?.email);
-
   const handleFavourite = async () => {
-    setSavedGame(true);
+    if (
+      favouriteGames &&
+      favouriteGames.some(favGame => favGame.id === game.id)
+    ) {
+      console.log("Already in favourites");
+      return null;
+    }
     await updateDoc(ref, {
       favourites: arrayUnion({
         id: game.id,
@@ -35,7 +37,12 @@ const AllGamesCard = ({ game, user }) => {
 
         <div className="absolute bottom-2 left-2">
           <button className="p-1 " onClick={handleFavourite}>
-            <FiHeart size={25} style={{ fill: savedGame ? "red" : null }} />
+            {favouriteGames &&
+            favouriteGames.some(favGame => favGame.id === game.id) ? (
+              <FiHeart size={25} style={{ fill: "red" }} />
+            ) : (
+              <FiHeart size={25} />
+            )}
           </button>
         </div>
       </div>

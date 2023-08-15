@@ -14,7 +14,7 @@ const GamePage = () => {
           src={game.thumbnail}
           alt={game.title}
         />
-        <h1 className="text-2xl font-semibold mb-2">Call of Duty: Warzone</h1>
+        <h1 className="text-2xl font-semibold mb-2">{game.title}</h1>
         <p className=" mb-4">{game.short_description}</p>
         <p className="mb-4">{game.status}</p>
         <h2 className="text-lg font-semibold mb-2">Description:</h2>
@@ -31,11 +31,11 @@ const GamePage = () => {
             Minimum System Requirements:
           </h2>
           <ul className="list-disc list-inside text-gray-400">
-            <li>OS: {game.minimum_system_requirements.os}</li>
-            <li>Processor: {game.minimum_system_requirements.processor}</li>
-            <li>Memory: {game.minimum_system_requirements.memory}</li>
-            <li>Graphics: {game.minimum_system_requirements.graphics}</li>
-            <li>Storage: {game.minimum_system_requirements.storage}</li>
+            <li>OS: {game.minimum_system_requirements?.os}</li>
+            <li>Processor: {game.minimum_system_requirements?.processor}</li>
+            <li>Memory: {game.minimum_system_requirements?.memory}</li>
+            <li>Graphics: {game.minimum_system_requirements?.graphics}</li>
+            <li>Storage: {game.minimum_system_requirements?.storage}</li>
           </ul>
         </div>
         <div className="mt-4">

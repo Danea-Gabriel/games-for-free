@@ -1,7 +1,21 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
+import { firestore } from "../firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
-const FavouriteCard = ({ game }) => {
+const FavouriteCard = ({ game, user, favouriteGames }) => {
+  const ref = doc(firestore, "users", user?.data?.email);
+
+  const deleteGame = async id => {
+    try {
+      const result = favouriteGames.filter(game => game.id !== id);
+      await updateDoc(ref, {
+        favourites: result,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="max-w-md mx-auto bg-[#32383e] rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 ">
       <div className="relative h-48">
@@ -35,6 +49,12 @@ const FavouriteCard = ({ game }) => {
         <p className="mt-1 text-md text-gray-300 line-clamp-2">
           {game.short_description}
         </p>
+        <button
+          onClick={() => deleteGame(game.id)}
+          className="px-2 py-1 text-sm bg-gray-400 text-white rounded transition-colors hover:bg-gray-500 "
+        >
+          Remove from favourites
+        </button>
       </div>
     </div>
   );

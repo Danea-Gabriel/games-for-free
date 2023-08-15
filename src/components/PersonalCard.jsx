@@ -2,34 +2,38 @@
 import { Link } from "react-router-dom";
 const PersonalCard = ({ game }) => {
   return (
-    <div className="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
-      <div
-        className="relative overflow-hidden bg-cover bg-no-repeat"
-        data-te-ripple-init
-        data-te-ripple-color="light"
-      >
-        <img className="rounded-t-lg" src={game.thumbnail} alt="" />
-        <a href="#!">
-          <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsla(0,0%,98%,0.15)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
-        </a>
+    <div className="max-w-md mx-auto bg-[#32383e] rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 ">
+      <div className="relative h-48">
+        <img
+          className="object-cover w-full h-full "
+          src={game.thumbnail}
+          alt="Image"
+        />
       </div>
-      <div className="p-6">
-        <h5 className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
+      <div className="p-4">
+        <div className="flex items-center justify-between">
+          <Link to={`/game/${game.id}`}>
+            <button className="px-2 py-1 text-sm bg-blue-500 text-white rounded transition-colors hover:bg-blue-400 ">
+              See More...
+            </button>
+          </Link>
+          <button className="p-1  rounded-full">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path d="M0 12v-8.646l10-1.355v10.001h-10zm11 0h13v-12l-13 1.807v10.193zm-1 1h-10v7.646l10 1.355v-9.001zm1 0v9.194l13 1.806v-11h-13z" />
+            </svg>
+          </button>
+        </div>
+        <h2 className="mt-2 text-lg font-semibold text-gray-200">
           {game.title}
-        </h5>
-        <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+        </h2>
+        <p className="mt-1 text-md text-gray-300 line-clamp-2">
           {game.short_description}
         </p>
-        <Link to={`/game/${game.id}`} className="">
-          <button
-            type="button"
-            className=" inline-block rounded bg-blue-400 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-            data-te-ripple-init
-            data-te-ripple-color="light"
-          >
-            See More
-          </button>
-        </Link>
       </div>
     </div>
   );

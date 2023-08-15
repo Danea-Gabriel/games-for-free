@@ -1,16 +1,31 @@
-import { useState } from "react";
 import AllGamesCard from "../components/AllGamesCard";
 import { useGames } from "../hooks/useGames";
 import { useAuthUser } from "@react-query-firebase/auth";
 import { auth } from "../firebase";
+import { useEffect, useState } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { firestore } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const AllGames = () => {
   const { data: games, isLoading, isError } = useGames();
   const [searchTerm, setSearchTerm] = useState("");
+  const [favouriteGames, setFavouriteGames] = useState([]);
   const user = useAuthUser(["user"], auth);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (user?.data?.email) {
+      onSnapshot(doc(firestore, "users", `${user?.data?.email}`), doc => {
+        setFavouriteGames(doc.data()?.favourites);
+      });
+    } else {
+      navigate("/signin");
+    }
+  }, [user?.data?.email]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching Games</div>;
+
   return (
     <div className="dark:bg-gray-900 w-full overflow-auto min-h-screen">
       <form className="max-w-[1140px] w-full mx-auto">
@@ -56,7 +71,12 @@ const AllGames = () => {
                 }
               })
               .map(game => (
-                <AllGamesCard key={game.id} game={game} user={user} />
+                <AllGamesCard
+                  key={game.id}
+                  game={game}
+                  user={user}
+                  favouriteGames={favouriteGames.length > 0 && favouriteGames}
+                />
               ))}
         </div>
       </div>

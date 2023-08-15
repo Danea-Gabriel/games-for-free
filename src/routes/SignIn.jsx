@@ -1,9 +1,11 @@
 import { useAuthSignInWithEmailAndPassword } from "@react-query-firebase/auth";
 import { auth } from "../firebase";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const signin = useAuthSignInWithEmailAndPassword(auth, {
     onError(error) {
       console.log(error);
@@ -13,6 +15,9 @@ const SignIn = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     signin.mutate({ email, password });
+    setEmail("");
+    setPassword("");
+    navigate("/");
   };
 
   return (
